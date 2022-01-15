@@ -29,8 +29,8 @@ public class BasicTest {
     @Test
     public void shouldNotApplyCoupon() {
 
-        final Attribute dairyCategory = createAttribute("Category", "grocery");
-        Item milk = new Item("1", "200").addAttribute(dairyCategory);
+        final Attribute groceryCategory = createAttribute("Category", "grocery");
+        Item milk = new Item("1", "200").addAttribute(groceryCategory);
 
         Criteria dairyProduct = createCriteria("isDairyProd", "dairy", "Category" , OperatorType.EQUAL);
         Criteria priceCriteria = createCriteria("priceCriteria", "100", "Price" , OperatorType.GREATER_THAN_OR_EQUAl);
@@ -38,6 +38,23 @@ public class BasicTest {
         Coupon dairyProdCoupon = new Coupon("1", "CategoryCoupon")
                 .addCriteria(dairyProduct)
                 .addCriteria(priceCriteria);
+
+        Assert.assertFalse(dairyProdCoupon.apply(milk));
+    }
+
+    @Test
+    public void shouldNotApplyIfAttributeAbsent() {
+
+        final Attribute dairyCategory = createAttribute("Category", "dairy");
+        Item milk = new Item("1", "200")
+                .addAttribute(dairyCategory);
+
+        Criteria dairyProduct = createCriteria("isDairyProd", "dairy", "Category" , OperatorType.EQUAL);
+        Criteria stateName = createCriteria("StateCriteria", "UP", "State", OperatorType.EQUAL);
+
+        Coupon dairyProdCoupon = new Coupon("1", "CategoryCoupon")
+                .addCriteria(dairyProduct)
+                .addCriteria(stateName);
 
         Assert.assertFalse(dairyProdCoupon.apply(milk));
     }

@@ -5,27 +5,18 @@ import java.util.List;
 
 public class Coupon {
 
-    String id;
-    String name;
-    List<Criteria> criterias;
-
-    public Coupon(String id) {
-        this.id = id;
-        initialiseCriterias();
-    }
+    final String id;
+    final String name;
+    final List<Criteria> criterias;
 
     public Coupon(String id, String name) {
         this.id = id;
         this.name = name;
-        initialiseCriterias();
+        criterias = new ArrayList<>();
     }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public List<Criteria> getCriteriaList() {
@@ -48,10 +39,6 @@ public class Coupon {
             }
         }
         return true;
-    }
-
-    private void initialiseCriterias() {
-        criterias = new ArrayList<>();
     }
 
 }

@@ -1,12 +1,15 @@
 package models;
 
+import java.util.logging.Logger;
+
 public class Criteria implements Applicable {
 
-    String id;
-    String name;
-    String value;
-    String attribute;
-    OperatorType operatorType;
+    final String id;
+    final String name;
+    final String value;
+    final String attribute;
+    final OperatorType operatorType;
+    private static final Logger LOGGER = Logger.getLogger(Criteria.class.toString());
 
     public Criteria(String id, String name, String value, String attribute, OperatorType operatorType) {
         this.id = id;
@@ -20,55 +23,39 @@ public class Criteria implements Applicable {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     public OperatorType getOperatorType() {
         return operatorType;
     }
-
-    public void setOperatorType(OperatorType operatorType) {
-        this.operatorType = operatorType;
-    }
-
     public String getAttribute() {
         return attribute;
     }
 
-    public void setAttribute(String attribute) {
-        this.attribute = attribute;
-    }
-
     @Override
     public boolean isApplicable(String actualValue) {
-        switch (operatorType) {
-            case GREATER_THAN_OR_EQUAl:
-                return greaterThanEqualCheck(actualValue, value);
-            case LESS_THAN_OR_EQUAL:
-                return lessThanEqualCheck(actualValue, value);
-            case GREATER_THAN:
-                return greaterThanCheck(actualValue, value);
-            case LESS_THAN:
-                return lessThanCheck(actualValue, value);
-            case EQUAL:
-                return equalsCheck(actualValue, value);
+        try {
+            switch (operatorType) {
+                case GREATER_THAN_OR_EQUAl:
+                    return greaterThanEqualCheck(actualValue, value);
+                case LESS_THAN_OR_EQUAL:
+                    return lessThanEqualCheck(actualValue, value);
+                case GREATER_THAN:
+                    return greaterThanCheck(actualValue, value);
+                case LESS_THAN:
+                    return lessThanCheck(actualValue, value);
+                case EQUAL:
+                    return equalsCheck(actualValue, value);
+            }
+        } catch (NullPointerException e) {
+            LOGGER.warning("Attribute not present on item");
+            return false;
         }
         return false;
     }

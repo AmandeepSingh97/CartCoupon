@@ -53,6 +53,9 @@ public class Item {
     }
 
     public String getAttributeValue(String attributeName) {
-        return attributes.get(attributeName).value;
+        if(attributes.containsKey(attributeName)) {
+            return attributes.get(attributeName).value;
+        }
+        return null;
     }
 }
