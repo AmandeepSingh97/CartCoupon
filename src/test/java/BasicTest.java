@@ -59,6 +59,33 @@ public class BasicTest {
         Assert.assertFalse(dairyProdCoupon.apply(milk));
     }
 
+    @Test
+    public void shouldApplyMultipleCoupons() {
+
+        final Attribute dairyCategory = createAttribute("Category", "dairy");
+        final Attribute state = createAttribute("State", "UP");
+        final Attribute size = createAttribute("Size", "large");
+        Item milk = new Item("1", "200")
+                .addAttribute(dairyCategory)
+                .addAttribute(state)
+                .addAttribute(size);
+
+        Criteria dairyProduct = createCriteria("isDairyProd", "dairy", "Category" , OperatorType.EQUAL);
+        Criteria stateName = createCriteria("StateCriteria", "UP", "State", OperatorType.EQUAL);
+
+        Coupon dairyProdCoupon = new Coupon("1", "CategoryCoupon")
+                .addCriteria(dairyProduct)
+                .addCriteria(stateName);
+
+        Criteria sizeCrietria = createCriteria("isLarge", "large", "Size", OperatorType.EQUAL);
+        Coupon UPStateLargePacketCoupon = new Coupon("1", "CategoryCoupon")
+                .addCriteria(stateName)
+                .addCriteria(sizeCrietria);
+
+        Assert.assertTrue(dairyProdCoupon.apply(milk));
+        Assert.assertTrue(UPStateLargePacketCoupon.apply(milk));
+    }
+
     private Attribute createAttribute(String name, String value) {
           return AttributeRepository.createAttribute(name, value);
     }
